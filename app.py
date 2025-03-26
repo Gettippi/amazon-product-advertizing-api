@@ -17,7 +17,19 @@ def search_products():
 
     # Perform the product search
     try:
-        response = amazon.search(Keywords=keywords, SearchIndex='All')
+        products = amazon.search(Keywords=keywords, SearchIndex='All')
+
+        response = []
+
+        for i, product in enumerate(products):
+            response.append({
+                'id': product.asin,
+                'title': product.title,
+                'url': product.offer_url,
+                'price': product.price_and_currency[0],
+                'currency': product.price_and_currency[1],
+                'image_url': product.large_image_url
+            })
         return jsonify(response)
     except Exception as e:
         return jsonify({'error': str(e)})
@@ -37,4 +49,4 @@ def convert_to_stripe():
         return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)

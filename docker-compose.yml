@@ -1,9 +1,9 @@
 services:
-  app:
+  amazon-pa:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "5000:5000"
+    # ports:
+    #   - "5000:5000"
     environment:
       - NODE_ENV=production
