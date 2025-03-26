@@ -13,7 +13,7 @@ def search_products():
     secret_key = request.args.get('secret_key')
     associate_tag = request.args.get('associate_tag')
 
-    amazon = AmazonApi(access_key, secret_key, associate_tag, 'US')
+    amazon = AmazonApi(access_key, secret_key, associate_tag, 'US', throttling=4)
 
     # Perform the product search
     try:
