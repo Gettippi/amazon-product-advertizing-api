@@ -18,9 +18,10 @@ def search_products():
     # Perform the product search
     try:
         products = amazon.search(Keywords=keywords, SearchIndex='All')
-        logging.info(f'Found {len(products)} products for the search term "{keywords}"')
-        logging.debug(products)
-        
+        try:
+            logging.debug(products)
+        except Exception as e:
+            logging.error("Error occurred while debugging:", exc_info=e)
         response = []
 
         for i, product in enumerate(products):
