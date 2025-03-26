@@ -18,7 +18,7 @@ def search_products():
     # Perform the product search
     try:
         products = amazon.search(Keywords=keywords, SearchIndex='All')
-
+        print("products", products)
         response = []
 
         for i, product in enumerate(products):
