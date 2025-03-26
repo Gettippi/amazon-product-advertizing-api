@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from amazon.api import AmazonAPI
 import logging
+import amazonscraper
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -13,23 +14,25 @@ def search_products():
     associate_tag = request.args.get('associate_tag')
 
     # Initialize the Amazon Product Advertising API client
-    amazon = AmazonAPI(access_key, secret_key, associate_tag)
+    # amazon = AmazonAPI(access_key, secret_key, associate_tag)
 
     # Perform the product search
     try:
-        products = amazon.search(Keywords=keywords, SearchIndex='All')
-        try:
-            logging.debug(products)
-        except Exception as e:
-            logging.error("Error occurred while debugging:", exc_info=e)
-        response = []
+        results = amazonscraper.search(keywords, max_product_nb=5)
 
-        for i, product in enumerate(products):
-            response.append({
-                'title': product.title,
-                'url': product.offer_url
-            })
-        return jsonify(response)
+        # products = amazon.search(Keywords=keywords, SearchIndex='All')
+        # try:
+        #     logging.debug(products)
+        # except Exception as e:
+        #     logging.error("Error occurred while debugging:", exc_info=e)
+        # response = []
+
+        # for i, product in enumerate(products):
+        #     response.append({
+        #         'title': product.title,
+        #         'url': product.offer_url
+        #     })
+        return jsonify(results)
     except Exception as e:
         return jsonify({'error': str(e)})
 
