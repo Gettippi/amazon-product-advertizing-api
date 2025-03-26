@@ -30,7 +30,7 @@ def search_products():
                 # 'currency': product.price_and_currency[1],
                 # 'image_url': product.large_image_url
             })
-        return jsonify(response)
+        return jsonify(products[0])
     except Exception as e:
         return jsonify({'error': str(e)})
 
