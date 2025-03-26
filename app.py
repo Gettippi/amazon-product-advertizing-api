@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
-# from amazon.api import AmazonAPI
+from amazon.api import AmazonAPI
 import logging
-import amazonscraper
+import traceback
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -14,27 +14,28 @@ def search_products():
     associate_tag = request.args.get('associate_tag')
 
     # Initialize the Amazon Product Advertising API client
-    # amazon = AmazonAPI(access_key, secret_key, associate_tag)
+    amazon = AmazonAPI(access_key, secret_key, associate_tag)
 
     # Perform the product search
     try:
-        results = amazonscraper.search(keywords, max_product_nb=5)
+        products = amazon.search(Keywords=keywords, SearchIndex='All')
+        try:
+            logging.debug(products)
+        except Exception as e:
+            logging.error("Error occurred while debugging:", exc_info=e)
+        response = []
 
-        # products = amazon.search(Keywords=keywords, SearchIndex='All')
-        # try:
-        #     logging.debug(products)
-        # except Exception as e:
-        #     logging.error("Error occurred while debugging:", exc_info=e)
-        # response = []
-
-        # for i, product in enumerate(products):
-        #     response.append({
-        #         'title': product.title,
-        #         'url': product.offer_url
-        #     })
-        return jsonify(results)
+        for i, product in enumerate(products):
+            response.append({
+                'title': product.title,
+                'url': product.offer_url
+            })
+        return jsonify(response)
     except Exception as e:
-        return jsonify({'error': str(e)})
+        logging.error("An error occurred during product search:", exc_info=e)
+        traceback_str = traceback.format_exc()
+        logging.debug("Complete traceback: %s", traceback_str)
+        return jsonify({'error': str(e), 'traceback': traceback_str})
 
 @app.route('/convert_to_stripe', methods=['POST'])
 def convert_to_stripe():
