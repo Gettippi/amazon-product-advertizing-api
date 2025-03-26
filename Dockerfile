@@ -10,6 +10,9 @@ ENV PYTHONUNBUFFERED=1
 # Copy the requirements file to the container
 COPY requirements.txt .
 
+# Update pip to the latest version
+RUN pip install --no-cache-dir --upgrade pip
+
 # Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
