@@ -18,19 +18,19 @@ def search_products():
     # Perform the product search
     try:
         products = amazon.search(Keywords=keywords, SearchIndex='All')
-        print("products", products)
-        response = []
+        # print("products", products)
+        # response = []
 
-        for i, product in enumerate(products):
-            response.append({
-                # 'id': product.asin,
-                'title': product.title,
-                'url': product.offer_url,
-                # 'price': product.price_and_currency[0],
-                # 'currency': product.price_and_currency[1],
-                # 'image_url': product.large_image_url
-            })
-        return jsonify(products[0])
+        # for i, product in enumerate(products):
+        #     response.append({
+        #         # 'id': product.asin,
+        #         'title': product.title,
+        #         'url': product.offer_url,
+        #         # 'price': product.price_and_currency[0],
+        #         # 'currency': product.price_and_currency[1],
+        #         # 'image_url': product.large_image_url
+        #     })
+        return jsonify(products)
     except Exception as e:
         return jsonify({'error': str(e)})
 
