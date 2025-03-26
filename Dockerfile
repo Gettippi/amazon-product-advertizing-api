@@ -11,10 +11,10 @@ ENV PYTHONUNBUFFERED=1
 COPY requirements.txt .
 
 # Update pip to the latest version
-RUN pip install --no-cache-dir --upgrade pip
+RUN pip3 install --no-cache-dir --upgrade pip3
 
 # Install the dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Copy the application code to the container
 COPY app.py .

@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from amazon.api import AmazonAPI
+# from amazon.api import AmazonAPI
 import logging
 import amazonscraper
 
