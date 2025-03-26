@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
-from amazon.api import AmazonAPI
 import logging
 import traceback
+from amazon_paapi import AmazonApi
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -13,24 +13,13 @@ def search_products():
     secret_key = request.args.get('secret_key')
     associate_tag = request.args.get('associate_tag')
 
-    # Initialize the Amazon Product Advertising API client
-    amazon = AmazonAPI(access_key, secret_key, associate_tag)
+    amazon = AmazonApi(access_key, secret_key, associate_tag, 'US')
 
     # Perform the product search
     try:
-        products = amazon.search(Keywords=keywords, SearchIndex='All')
-        try:
-            logging.debug(products)
-        except Exception as e:
-            logging.error("Error occurred while debugging:", exc_info=e)
-        response = []
-
-        for i, product in enumerate(products):
-            response.append({
-                'title': product.title,
-                'url': product.offer_url
-            })
-        return jsonify(response)
+        search_result = amazon.search_items(keywords=keywords)
+        
+        return jsonify(search_result.items)
     except Exception as e:
         logging.error("An error occurred during product search:", exc_info=e)
         traceback_str = traceback.format_exc()
